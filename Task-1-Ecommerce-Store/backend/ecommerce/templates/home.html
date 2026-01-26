@@ -1,21 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple E-commerce Store</title>
+    <title>Ecommerce Store</title>
 </head>
 <body>
-    <h1>Products</h1>
 
-    {% if products %}
-        {% for product in products %}
-            <div style="border:1px solid #ccc; padding:10px; margin:10px;">
-                <h3>{{ product.name }}</h3>
-                <p>₹{{ product.price }}</p>
-                <p>{{ product.description }}</p>
-            </div>
-        {% endfor %}
-    {% else %}
-        <p>No products available.</p>
-    {% endif %}
+<h1>Welcome to Simple E-commerce Store</h1>
+
+{% if user.is_authenticated %}
+    <p>Hello, {{ user.username }} 👋</p>
+
+    <a href="{% url 'logout' %}">
+        <button>Logout</button>
+    </a>
+
+    <br><br>
+    <a href="{% url 'product_list' %}">
+        <button>View Products</button>
+    </a>
+
+{% else %}
+    <a href="{% url 'login' %}">
+        <button>Login</button>
+    </a>
+
+    <a href="{% url 'register' %}">
+        <button>Register</button>
+    </a>
+{% endif %}
+
 </body>
 </html>

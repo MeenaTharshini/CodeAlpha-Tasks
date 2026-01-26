@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #1f2937;
+            color: white;
+            padding: 15px 30px;
+            font-size: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .payment-wrapper {
+            max-width: 420px;
+            margin: 90px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .payment-wrapper h2 {
+            margin-bottom: 15px;
+            color: #111827;
+        }
+
+        .amount {
+            font-size: 22px;
+            font-weight: bold;
+            color: #16a34a;
+            margin-bottom: 30px;
+        }
+
+        .btn-pay {
+            width: 100%;
+            padding: 14px;
+            background: #f59e0b;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn-pay:hover {
+            background: #d97706;
+        }
+
+        .btn-pay:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+        }
+
+        .note {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #6b7280;
+        }
+    </style>
+</head>
+<body>
+
+<header>🛍 Simple E-Commerce Store</header>
+
+<div class="payment-wrapper">
+    <h2>Payment for Order #{{ order.id }}</h2>
+
+    <p class="amount">₹{{ order.total_price }}</p>
+
+    <form method="post" id="paymentForm">
+        {% csrf_token %}
+        <button type="submit" class="btn-pay">💳 Pay Now (Fake)</button>
+    </form>
+
+    <p class="note">🔒 This is a demo payment. No real money is charged.</p>
+</div>
+
+<script>
+document.querySelector('#paymentForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const btn = this.querySelector('button');
+    btn.disabled = true;
+    btn.innerText = "Processing Payment...";
+    setTimeout(() => this.submit(), 2000); // CSRF token stays intact
+});
+</script>
+
+</body>
+</html>

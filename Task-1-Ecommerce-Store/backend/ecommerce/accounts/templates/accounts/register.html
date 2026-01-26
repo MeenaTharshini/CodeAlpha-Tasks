@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Register</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -19,34 +19,31 @@
         }
 
         .auth-container {
-            max-width: 420px;
-            margin: 80px auto;
+            max-width: 450px;
+            margin: 60px auto;
             background: white;
             padding: 30px;
             border-radius: 14px;
             box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
-        .auth-container h2 {
+        h2 {
             text-align: center;
             margin-bottom: 25px;
-            color: #111827;
         }
 
         input {
             width: 100%;
             padding: 12px;
-            margin-top: 6px;
             margin-bottom: 18px;
             border-radius: 8px;
             border: 1px solid #d1d5db;
-            font-size: 15px;
         }
 
         button {
             width: 100%;
             padding: 12px;
-            background: #22c55e;
+            background: #2563eb;
             border: none;
             border-radius: 8px;
             color: white;
@@ -56,26 +53,18 @@
         }
 
         button:hover {
-            background: #16a34a;
+            background: #1d4ed8;
+        }
+
+        .error {
+            color: #dc2626;
+            text-align: center;
+            font-weight: bold;
         }
 
         .links {
             text-align: center;
             margin-top: 15px;
-        }
-
-        .links a {
-            text-decoration: none;
-            color: #2563eb;
-            font-weight: bold;
-            font-size: 14px;
-        }
-
-        .error {
-            color: #dc2626;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
         }
     </style>
 </head>
@@ -84,7 +73,7 @@
 <header>🛍 Simple E-Commerce Store</header>
 
 <div class="auth-container">
-    <h2>Login</h2>
+    <h2>Create Account</h2>
 
     {% if messages %}
       {% for message in messages %}
@@ -92,20 +81,18 @@
       {% endfor %}
     {% endif %}
 
-    <form method="POST" id="loginForm" autocomplete="off">
+    <form method="POST" autocomplete="off">
         {% csrf_token %}
-        <label>Username</label>
-        <input type="text" name="username" id="username">
+        <input type="text" name="username" placeholder="Username">
+        <input type="email" name="email" placeholder="Email">
+        <input type="password" name="password1" placeholder="Password">
+        <input type="password" name="password2" placeholder="Confirm Password">
 
-        <label>Password</label>
-        <input type="password" name="password" id="password">
-
-        <button type="submit">Login</button>
+        <button type="submit">Register</button>
     </form>
 
     <div class="links">
-        <a href="{% url 'password_reset' %}">Forgot Password?</a><br><br>
-        <a href="{% url 'register' %}">Create new account</a>
+        <a href="{% url 'login' %}">Already have an account? Login</a>
     </div>
 </div>
 

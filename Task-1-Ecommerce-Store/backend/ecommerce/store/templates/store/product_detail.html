@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ product.name }}</title>
+    <style>
+        body { font-family: Arial; background: #f9fafb; padding: 30px; }
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        img { width: 100%; border-radius: 10px; }
+        .price { font-size: 22px; font-weight: bold; }
+        .stock { margin: 10px 0; font-weight: bold; }
+        .green { color: green; }
+        .red { color: red; }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 18px;
+            margin: 8px 5px;
+            border-radius: 8px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .cart { background: #22c55e; }
+        .wish { background: #ec4899; }
+        .buy { background: #f97316; }
+        .disabled { background: gray; pointer-events: none; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+
+    {% if product.image %}
+        <img src="{{ product.image.url }}">
+    {% endif %}
+
+    <h2>{{ product.name }}</h2>
+    <p class="price">₹{{ product.price }}</p>
+
+    <!-- STOCK DISPLAY -->
+    {% if product.stock > 0 %}
+        <p class="stock green">✅ In Stock ({{ product.stock }} available)</p>
+    {% else %}
+        <p class="stock red">❌ Out of Stock</p>
+    {% endif %}
+
+    <p>{{ product.description }}</p>
+
+    <!-- BUTTONS -->
+    {% if product.stock > 0 %}
+        <a href="{% url 'add_to_cart' product.id %}" class="btn cart">Add to Cart 🛒</a>
+        <a href="{% url 'buy_now' product.id %}" class="btn buy">Buy Now ⚡</a>
+    {% else %}
+        <a class="btn disabled">Out of Stock</a>
+    {% endif %}
+
+    <a href="{% url 'add_to_wishlist' product.id %}" class="btn wish">Wishlist ❤️</a>
+
+</div>
+
+</body>
+</html>

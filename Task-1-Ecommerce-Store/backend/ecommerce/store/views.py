@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Product, Wishlist, Order
+from django.contrib.auth.models import User
 from django.contrib import messages
 
 def product_list(request):
@@ -123,3 +124,95 @@ def place_order(request):
 def my_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'store/my_orders.html', {'orders': orders})
+
+@login_required
+def buy_now(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    # Calculate total
+    total_price = product.price
+
+    # Create an order but mark it as unpaid
+    order = Order.objects.create(
+        user=request.user,
+        total_price=total_price,
+        status='Pending'  # make sure your Order model has a status field
+    )
+    order.products.add(product)
+    # Optionally, store the product in the order if you have a ManyToManyField
+    # order.products.add(product)
+
+    messages.info(request, f"Proceeding to payment for {product.name}")
+    return redirect('payment', order_id=order.id)
+
+
+def payment(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        # Fake payment success
+        order.status = 'Paid'
+        order.save()
+        return redirect('order_success', order_id=order.id)
+
+    return render(request, 'store/payment.html', {'order': order})
+
+def order_success(request, order_id=None):
+    order = None
+    total_price = None
+
+    if order_id:
+        order = get_object_or_404(Order, id=order_id)
+        total_price = order.total_price  # ← add this line
+    else:
+        # For cart checkout without order_id
+        total_price = request.session.get('last_order_total', 0)
+
+    return render(request, 'store/order_success.html', {
+        'order': order,
+        'total_price': total_price
+    })
+@login_required
+def buy_now(request, id):
+    product = get_object_or_404(Product, id=id)
+
+    # Create order
+    order = Order.objects.create(
+        user=request.user,
+        total_price=product.price,
+        status="Pending"
+    )
+
+    order.products.add(product)
+
+    messages.info(request, "Proceeding to payment")
+    return redirect('payment', order_id=order.id)
+
+
+@login_required
+def payment(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+
+    if request.method == "POST":
+        # Reduce stock
+        for product in order.products.all():
+            if product.stock > 0:
+                product.stock -= 1
+                product.save()
+
+        order.status = 'Paid'
+        order.save()
+
+        return redirect('order_success', order_id=order.id)
+
+    return render(request, 'store/payment.html', {'order': order})
+
+
+@login_required
+def order_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id)
+    return render(request, 'store/order_success.html', {
+        'order': order,
+        'total_price': order.total_price
+    })
+

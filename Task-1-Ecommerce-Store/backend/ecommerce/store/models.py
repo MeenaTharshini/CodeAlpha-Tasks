@@ -6,7 +6,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField()
     image = models.ImageField(upload_to='products/', blank=True, null=True)
-
+    stock = models.PositiveIntegerField(default=0)
     def __str__(self):
         return self.name
 
@@ -23,10 +23,10 @@ class Wishlist(models.Model):
         return f"{self.user.username} - {self.product.name}"
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    products = models.ManyToManyField(Product, blank=True) 
+    total_price = models.FloatField()
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, default="Placed")
     def __str__(self):
         return f"Order #{self.id} - {self.user.username}"
 
-###
