@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,14 +37,12 @@
             padding: 20px;
         }
 
-        /* Products grid */
         .products {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
         }
 
-        /* Product card */
         .product-card {
             background: white;
             border-radius: 12px;
@@ -58,7 +57,6 @@
             transform: translateY(-5px);
         }
 
-        /* Product image clickable */
         .product-card img {
             width: 100%;
             height: 180px;
@@ -105,13 +103,8 @@
         }
 
         .btn-cart { background: #22c55e; }
-        .btn-cart:hover { background: #16a34a; }
-
         .btn-wishlist { background: #ec4899; }
-        .btn-wishlist:hover { background: #db2777; }
-
         .btn-buy { background: #f59e0b; }
-        .btn-buy:hover { background: #d97706; }
 
         .footer-link {
             display: block;
@@ -133,7 +126,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         }
 
-        /* Responsive for small devices */
         @media screen and (max-width: 600px) {
             header {
                 flex-direction: column;
@@ -148,6 +140,7 @@
         }
     </style>
 </head>
+
 <body>
 
 <header>
@@ -178,25 +171,13 @@
     {% endfor %}
 {% endif %}
 
-<script>
-    setTimeout(() => {
-        const alert = document.querySelector('.alert-message');
-        if (alert) alert.remove();
-    }, 3000);
-</script>
-
 <div class="container">
-
 {% if products %}
 <div class="products">
 {% for product in products %}
     <div class="product-card">
         <a href="{% url 'product_detail' product.id %}">
-            {% if product.image %}
-                <img src="{{ product.image.url }}" class="product-img" alt="{{ product.name }}">
-            {% else %}
-                <img src="https://via.placeholder.com/300x200" class="product-img" alt="{{ product.name }}">
-            {% endif %}
+            <img src="{{ product.image.url|default:'https://via.placeholder.com/300x200' }}" alt="{{ product.name }}">
         </a>
 
         <h2><a href="{% url 'product_detail' product.id %}">{{ product.name }}</a></h2>
@@ -205,26 +186,20 @@
         <p>{{ product.description|truncatewords:20 }}</p>
 
         <div class="actions">
-        {% if user.is_authenticated %}
             <form action="{% url 'add_to_cart' product.id %}" method="post">
                 {% csrf_token %}
-                <button class="btn btn-cart">Add to Cart🛒</button>
+                <button class="btn btn-cart">Add to Cart</button>
             </form>
 
             <form action="{% url 'add_to_wishlist' product.id %}" method="post">
                 {% csrf_token %}
-                <button class="btn btn-wishlist">💗Wishlist</button>
+                <button class="btn btn-wishlist">Wishlist</button>
             </form>
 
             <form action="{% url 'buy_now' product.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-buy">🅱️Buy Now</button>
+                <button class="btn btn-buy">Buy Now</button>
             </form>
-        {% else %}
-            <a href="{% url 'login' %}">
-                <button class="btn btn-buy">Login to Buy</button>
-            </a>
-        {% endif %}
         </div>
     </div>
 {% endfor %}
@@ -232,10 +207,12 @@
 {% else %}
 <p>No products available</p>
 {% endif %}
-
 </div>
 
 <a class="footer-link" href="{% url 'my_orders' %}">📦 View My Orders</a>
+
+<!-- JS loaded once, correctly -->
+<script src="{% static 'store/js/main.js' %}"></script>
 
 </body>
 </html>
