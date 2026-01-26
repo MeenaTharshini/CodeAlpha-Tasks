@@ -24,22 +24,23 @@ Each task is organized into a separate folder containing:
 
 ## Internship Tasks & Status
 
-### 🔹 Task 1 – Simple E-commerce Store
-- **Status:** In Progress  
-- **Tech Stack:** HTML, CSS, JavaScript, Django, SQLite  
-- **Description:**  
-  A basic e-commerce web application featuring product listings, product details,
-  shopping cart functionality, user authentication, and order processing.
+🔹 Task 1 – Simple E-commerce Store  
+Status: ✅ Completed  
 
----
+Tech Stack: HTML, CSS, JavaScript, Django, SQLite  
 
-## Technologies Used
-- **Frontend:** HTML, CSS, JavaScript
-- **Backend:** Django / Node.js
-- **Database:** SQLite / MongoDB
+Description:  
+A fully functional e-commerce web application featuring:
+- Product listings with images and stock availability  
+- Product detail pages  
+- Shopping cart functionality  
+- Wishlist feature with navigation to product details  
+- User authentication (login/register/logout)  
+- Order processing and order history  
+- Mobile-responsive UI  
+- Clean separation of frontend and backend logic  
 
----
+This task satisfies all requirements specified by CodeAlpha for Task 1.
 
-## Submission
 This repository is maintained as part of the  
 **CodeAlpha Full Stack Development Internship evaluation process.**
