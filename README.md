@@ -22,25 +22,30 @@ Each task is organized into a separate folder containing:
 
 ---
 
-## Internship Tasks & Status
+## 📌  Project Description
 
-🔹 Task 1 – Simple E-commerce Store  
-Status: ✅ Completed  
+This project is a fully functional E-commerce Web Application developed as part of the CodeAlpha Full Stack Development Internship (Task 1).
 
-Tech Stack: HTML, CSS, JavaScript, Django, SQLite  
+The application demonstrates complete integration of frontend and backend components using Django and includes essential e-commerce features.
 
-Description:  
-A fully functional e-commerce web application featuring:
-- Product listings with images and stock availability  
-- Product detail pages  
-- Shopping cart functionality  
-- Wishlist feature with navigation to product details  
-- User authentication (login/register/logout)  
-- Order processing and order history  
-- Mobile-responsive UI  
-- Clean separation of frontend and backend logic  
+## 🚀 Features Implemented
 
-This task satisfies all requirements specified by CodeAlpha for Task 1.
+🛍 Product listings with images and stock availability
 
-This repository is maintained as part of the  
-**CodeAlpha Full Stack Development Internship evaluation process.**
+📄 Detailed product view pages
+
+🛒 Shopping cart functionality
+
+❤️ Wishlist feature with direct navigation to product details
+
+🔐 User authentication (Register / Login / Logout)
+
+📦 Order placement and order history tracking
+
+📱 Mobile-responsive user interface
+
+🧱 Clean separation of frontend templates and backend logic using Django
+
+## 🎯 Objective Fulfilled
+
+This project successfully satisfies all the requirements specified by CodeAlpha for Task 1 and showcases practical implementation of full stack development concepts.
