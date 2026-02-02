@@ -49,3 +49,44 @@ The application demonstrates complete integration of frontend and backend compon
 ## 🎯 Objective Fulfilled
 
 This project successfully satisfies all the requirements specified by CodeAlpha for Task 1 and showcases practical implementation of full stack development concepts.
+## 📁 Project 1 Structure
+
+```
+CodeAlpha-FullStack-Internship
+└── CodeAlpha_EcommerceStore
+    └── backend
+        └── ecommerce
+            ├── accounts
+            │   ├── migrations
+            │   ├── templates
+            │   ├── models.py
+            │   ├── views.py
+            │   ├── urls.py
+            │   └── admin.py
+            │
+            ├── store
+            │   ├── migrations
+            │   ├── templates
+            │   ├── models.py
+            │   ├── views.py
+            │   ├── urls.py
+            │   └── admin.py
+            │
+            ├── ecommerce (project settings)
+            │   ├── settings.py
+            │   ├── urls.py
+            │   └── wsgi.py
+            │
+            ├── static
+            │   ├── css/style.css
+            │   └── store/js/main.js
+            │
+            ├── templates
+            │   ├── home.html
+            │   └── registration/login.html
+            │
+            ├── media/products
+            ├── db.sqlite3
+            └── manage.py
+```
+
