@@ -1,0 +1,68 @@
+[
+{
+  "model": "store.product",
+  "pk": 1,
+  "fields": {
+    "name": "Laptop",
+    "price": "39000.00",
+    "description": "Brand new laptop with powerful performance and sleek design. Perfect for students, professionals, coding, browsing, online classes, and entertainment.\r\n\r\n Latest features\r\n Fast performance\r\n Long battery life\r\n Crystal clear display\r\n\r\nSealed piece - Unused - With box and accessories.",
+    "image": "products/laptop.jpg",
+    "stock": 50
+  }
+},
+{
+  "model": "store.product",
+  "pk": 2,
+  "fields": {
+    "name": "Phone",
+    "price": "27000.00",
+    "description": "Brand new smartphone with excellent camera, smooth performance, and stylish look.\r\n\r\n High-quality camera\r\n Long-lasting battery\r\n Smooth touch display\r\n Latest features\r\n\r\nUnused mobile - Box packed - With charger and accessories.",
+    "image": "products/phone.jpg",
+    "stock": 49
+  }
+},
+{
+  "model": "store.product",
+  "pk": 3,
+  "fields": {
+    "name": "Ear Pods",
+    "price": "1999.00",
+    "description": "Stylish wireless headset with strong connectivity and clear sound.\r\n\r\n- Bluetooth connectivity\r\n- Long battery backup\r\n- Lightweight and comfortable\r\n\r\nBrand new • Box packed.",
+    "image": "products/earpods.png",
+    "stock": 40
+  }
+},
+{
+  "model": "store.product",
+  "pk": 4,
+  "fields": {
+    "name": "Smart Watch",
+    "price": "3499.00",
+    "description": "Stylish and feature-rich smart watch for fitness and daily use.\r\n\r\n- Heart rate monitor & step counter\r\n- Call and message notifications\r\n- Long battery backup\r\n- Comfortable and trendy design\r\n\r\nUnused • With box.",
+    "image": "products/smart_watch.jpeg",
+    "stock": 60
+  }
+},
+{
+  "model": "store.product",
+  "pk": 5,
+  "fields": {
+    "name": "Power Bank",
+    "price": "1199.00",
+    "description": "High-capacity power bank with fast charging support.\r\n\r\n- Portable and lightweight\r\n- Fast charging\r\n- Reliable battery backup\r\n\r\nUnused • Box packed.",
+    "image": "products/powerbank.jpeg",
+    "stock": 55
+  }
+},
+{
+  "model": "store.product",
+  "pk": 6,
+  "fields": {
+    "name": "Wireless Keyboard",
+    "price": "229.00",
+    "description": "Soft wireless keyboard with comfortable typing experience.\r\n\r\n- Smooth typing\r\n- Durable keys\r\n- Plug and play\r\n\r\nBrand new condition.",
+    "image": "products/wireless_keyboard_LwZhvaf.jpeg",
+    "stock": 70
+  }
+}
+]

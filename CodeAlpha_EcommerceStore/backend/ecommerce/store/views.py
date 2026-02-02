@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Product, Wishlist, Order
 from django.contrib.auth.models import User
 from django.contrib import messages
-
+from django.contrib.auth import logout
+@login_required
 def product_list(request):
     products = Product.objects.all()
 
@@ -19,7 +20,6 @@ def product_list(request):
         'wishlist_count': wishlist_count,
         'cart_count': cart_count
     })
-
 
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
@@ -100,25 +100,35 @@ def remove_from_cart(request, id):
 def place_order(request):
     cart = request.session.get('cart', {})
     if not cart:
+        messages.error(request, "Your cart is empty!")
         return redirect('cart')
 
     total_price = 0
+    products_in_order = []
+
+    # Calculate total and collect products
     for product_id, qty in cart.items():
         product = get_object_or_404(Product, id=product_id)
         total_price += product.price * qty
+        products_in_order.extend([product] * qty)  # repeat for quantity
 
-    Order.objects.create(
+    # Create order (Pending)
+    order = Order.objects.create(
         user=request.user,
-        total_price=total_price
+        total_price=total_price,
+        status='Pending'
     )
 
-    # Clear cart after order
+    # Add products to ManyToManyField
+    for product in products_in_order:
+        order.products.add(product)
+
+    # Clear cart after creating order
     request.session['cart'] = {}
 
-    return render(request, 'store/order_success.html', {
-        'total_price': total_price
-    })
-##########MY ORDE?R???S
+    messages.info(request, "Proceeding to payment for your cart")
+    return redirect('payment', order_id=order.id)
+
 
 @login_required
 def my_orders(request):

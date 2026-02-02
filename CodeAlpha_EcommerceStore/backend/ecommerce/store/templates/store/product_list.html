@@ -38,20 +38,22 @@
         }
 
         .products {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-        }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
 
         .product-card {
-            background: white;
-            border-radius: 12px;
-            padding: 15px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            transition: transform 0.2s ease;
-            display: flex;
-            flex-direction: column;
-        }
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    background: white;
+    text-align: center;
+    max-width: 300px;
+    margin: auto;
+}
+
 
         .product-card:hover {
             transform: translateY(-5px);
@@ -59,7 +61,7 @@
 
         .product-card img {
             width: 100%;
-            height: 180px;
+            height: 200px;
             object-fit: cover;
             border-radius: 8px;
             margin: 10px 0;
@@ -144,7 +146,7 @@
 <body>
 
 <header>
-    <h2>🛍 Simple E-Commerce Store</h2>
+    <h2>🛍 CodeAlpha E-Commerce Store</h2>
 
     <div>
         <a href="{% url 'cart' %}">
@@ -159,7 +161,7 @@
             👋 Hello, <b>{{ user.username }}</b>
             <a href="{% url 'logout' %}">Logout</a>
         {% else %}
-            <a href="{% url 'login' %}">Login</a>
+            <a href="{% url 'login' %}?next={{ request.path }}">Login</a>
             <a href="{% url 'register' %}">Register</a>
         {% endif %}
     </div>

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Login | Ecommerce Store</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            background: #f4f6f8;
+            background: #81f19b;
             margin: 0;
         }
 
@@ -81,7 +81,7 @@
 </head>
 <body>
 
-<header>🛍 Simple E-Commerce Store</header>
+<header>🛍 CodeAlpha E-Commerce Store</header>
 
 <div class="auth-container">
     <h2>Login</h2>
@@ -92,20 +92,23 @@
       {% endfor %}
     {% endif %}
 
-    <form method="POST" id="loginForm" autocomplete="off">
-        {% csrf_token %}
-        <label>Username</label>
-        <input type="text" name="username" id="username">
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
+    
+    <label>Username:</label>
+    <input type="text" name="username" required>
 
-        <label>Password</label>
-        <input type="password" name="password" id="password">
+    <label>Password:</label>
+    <input type="password" name="password" required>
 
-        <button type="submit">Login</button>
-    </form>
+    <button type="submit">Login</button>
+</form>
+
 
     <div class="links">
         <a href="{% url 'password_reset' %}">Forgot Password?</a><br><br>
-        <a href="{% url 'register' %}">Create new account</a>
+        <a href="{% url 'register' %}">New User? Create new account</a>
     </div>
 </div>
 
