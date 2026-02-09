@@ -1,0 +1,157 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user_profile.user.username }}'s Profile</title>
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+
+    <style>
+        .profile-container{
+            max-width: 900px;
+            margin: 40px auto;
+            background: #1e1e2f;
+            padding: 25px;
+            border-radius: 12px;
+            color: white;
+        }
+
+        .profile-top{
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .profile-pic{
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #f107a3;
+        }
+
+        .profile-info h2{
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .bio{
+            margin: 8px 0 15px 0;
+            color: #ddd;
+        }
+
+        .stats{
+            display: flex;
+            gap: 25px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .follow-btn{
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            background: linear-gradient(90deg, #7b2ff7, #f107a3);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .posts-title{
+            margin-top: 40px;
+            margin-bottom: 15px;
+            color: #f1db25;
+        }
+
+        .post-card{
+            background: #2b2b40;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .back-btn{
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="profile-container">
+
+    <div class="back-btn">
+        <a href="/">
+            <button class="follow-btn">⬅ Back to Feed</button>
+        </a>
+    </div>
+
+    <!-- Top Section -->
+    <div class="profile-top">
+        <div style="position: relative; width:140px; height:140px;">
+    <a href="{% url 'edit_profile' %}">
+        {% if user_profile.profile_pic %}
+            <img src="{{ user_profile.profile_pic.url }}" class="profile-pic">
+        {% else %}
+            <img src="{% static 'default.png' %}" class="profile-pic">
+        {% endif %}
+    </a>
+
+    {% if request.user == user_profile.user %}
+        <div style="
+            position:absolute;
+            bottom:0;
+            width:100%;
+            background: rgba(0,0,0,0.6);
+            color:white;
+            text-align:center;
+            font-size:12px;
+            padding:4px 0;
+            border-bottom-left-radius:50%;
+            border-bottom-right-radius:50%;">
+            {% if user_profile.profile_pic and user_profile.profile_pic.name != 'default.png' %}
+    Change Photo
+{% else %}
+    Add Photo
+{% endif %}
+
+        </div>
+    {% endif %}
+</div>
+
+
+        <div class="profile-info">
+            <h2>{{ user_profile.user.username }}</h2>
+            <div class="bio">{{ user_profile.bio }}</div>
+
+            <div class="stats">
+                <div>Followers: {{ user_profile.followers.count }}</div>
+                <div>Following: {{ user_profile.user.following.count }}</div>
+            </div>
+
+            {% if user != user_profile.user %}
+            <form method="POST">
+                {% csrf_token %}
+                <button type="submit" class="follow-btn">
+                    {% if is_following %}Unfollow{% else %}Follow{% endif %}
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Posts -->
+    <h3 class="posts-title">User Posts</h3>
+
+    {% for post in user_profile.user.post_set.all %}
+        <div class="post-card">
+            {{ post.content }}
+        </div>
+    {% empty %}
+        <p>No posts yet.</p>
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,189 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Feed</title>
+    <link rel="stylesheet" href="{% static 'posts/style.css' %}">
+
+    <style>
+    .navbar {
+        background: linear-gradient(90deg, #7b2ff7, #f107a3);
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: white;
+    }
+
+    .hamburger {
+        font-size: 26px;
+        cursor: pointer;
+        user-select: none;
+    }
+
+    .menu {
+        display: none;
+        flex-direction: column;
+        gap: 12px;
+        background: #1e1e2f;
+        position: absolute;
+        top: 65px;
+        left: 20px;
+        padding: 18px;
+        border-radius: 10px;
+        width: 240px;
+        box-shadow: 0 0 10px black;
+        z-index: 1000;
+    }
+
+    .show-menu { display: flex; }
+    .username { font-weight: bold; }
+    .like-btn { margin-left: 10px; cursor: pointer; }
+    </style>
+</head>
+
+<body>
+
+<div class="header" style="color: yellow;">CODEALPHA SOCIAL MEDIA</div>
+
+<div class="navbar">
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
+    <div class="username" style="color: yellow;">😀 Hey! {{ request.user.username }}</div>
+</div>
+
+<div id="menu" class="menu">
+    <a href="/">🏠 Home</a>
+    <a href="{% url 'profile' request.user.username %}">🙋🏻 My Profile</a>
+    <a href="{% url 'edit_profile' %}">📱 Edit Profile</a>
+
+    <form method="POST" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button style="background:none;border:none;color:white;cursor:pointer;">
+            Logout
+        </button>
+    </form>
+</div>
+
+<div class="container">
+
+    <a href="{% url 'create_post' %}">
+        <button>Create Post</button>
+    </a>
+    <br><br>
+
+    {% for post in posts %}
+    <div class="card">
+
+        <a class="username" href="{% url 'profile' post.user.username %}">
+            {{ post.user.username }}
+        </a>
+
+        <div class="post-content">{{ post.content }}</div>
+
+        {% if post.image %}
+        <img src="{{ post.image.url }}" style="max-width:100%; border-radius:8px; margin-top:8px;">
+        {% endif %}
+
+        <!-- LIKE -->
+        <div class="actions">
+            ❤️ <span id="like-count-{{ post.id }}">{{ post.total_likes }}</span>
+            <button type="button" class="like-btn" data-id="{{ post.id }}">Like</button>
+        </div>
+
+        <!-- COMMENTS -->
+        <h4>Comments</h4>
+        <div id="comments-{{ post.id }}">
+            {% for comment in post.comments.all %}
+                <p><b>{{ comment.user.username }}</b>: {{ comment.text }}</p>
+            {% empty %}
+                <p>No comments yet.</p>
+            {% endfor %}
+        </div>
+
+        <form class="comment-box" data-id="{{ post.id }}">
+            {% csrf_token %}
+            <input type="text" name="comment" placeholder="Add comment">
+            <button type="submit">Post</button>
+        </form>
+
+    </div>
+    {% endfor %}
+
+</div>
+
+<script>
+// Toggle menu
+function toggleMenu() {
+    document.getElementById("menu").classList.toggle("show-menu");
+}
+
+window.addEventListener('click', function(e) {
+    if (!e.target.closest('.hamburger') && !e.target.closest('.menu')) {
+        document.getElementById("menu").classList.remove("show-menu");
+    }
+});
+
+// CSRF
+function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        document.cookie.split(';').forEach(cookie => {
+            cookie = cookie.trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            }
+        });
+    }
+    return cookieValue;
+}
+
+// ✅ EVENT DELEGATION FOR LIKE & COMMENT
+document.addEventListener('click', function(e) {
+
+    // LIKE
+    if (e.target.classList.contains('like-btn')) {
+        const btn = e.target;
+        const postId = btn.dataset.id;
+
+        fetch(`/like/${postId}/`, {
+            method: 'POST',
+            headers: { 'X-CSRFToken': getCookie('csrftoken') }
+        })
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById(`like-count-${postId}`).innerText = data.total_likes;
+            btn.innerText = data.liked ? "Unlike" : "Like";
+        });
+    }
+});
+
+// COMMENT (submit)
+document.addEventListener('submit', function(e) {
+    if (e.target.classList.contains('comment-box')) {
+        e.preventDefault();
+
+        const form = e.target;
+        const postId = form.dataset.id;
+        const input = form.querySelector('input[name="comment"]');
+        const text = input.value;
+
+        fetch(`/comment/${postId}/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': getCookie('csrftoken'),
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: `comment=${encodeURIComponent(text)}`
+        })
+        .then(res => res.json())
+        .then(data => {
+            const box = document.getElementById(`comments-${postId}`);
+            box.innerHTML += `<p><b>${data.username}</b>: ${data.text}</p>`;
+            input.value = '';
+        });
+    }
+});
+</script>
+
+</body>
+</html>
